@@ -17,6 +17,8 @@ public interface FondoService {
 
     public void aperturaFondo(AperturaFondo aperturaFondo);
 
+    public void cancelarFondo(AperturaFondo aperturaFondo);
+
     public List<Transaccion> verHistorial(Cliente cliente);
     
 }

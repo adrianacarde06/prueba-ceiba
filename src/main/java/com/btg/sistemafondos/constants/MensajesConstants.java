@@ -10,6 +10,8 @@ public class MensajesConstants {
 
     public static final String CLIENTE_REQUERIDO = "El cliente es requerido";
 
+    public static final String APERTURA_FONDO_REQUERIDO = "La apertura de fondo es requerido";
+
     public static final String APERTURA_FONDO_CREADO = "Apertura de Fondo creado con exito";
 
     public static final String MONTO_MINIMO_FONDO = "El monto minimo no cumple los requisitos para este fondo";

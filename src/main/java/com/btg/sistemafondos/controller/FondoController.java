@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.btg.sistemafondos.constants.MensajesConstants;
-import com.btg.sistemafondos.exception.RequestException;
 import com.btg.sistemafondos.model.AperturaFondo;
 import com.btg.sistemafondos.model.Cliente;
 import com.btg.sistemafondos.model.Fondo;
@@ -51,6 +50,12 @@ public class FondoController {
     @PostMapping(value = "/aperturaFondo")
     public ResponseEntity  aperturaFondo(@RequestBody AperturaFondo aperturaFondo){
         fondoService.aperturaFondo(aperturaFondo);
+        return new ResponseEntity<>(MensajesConstants.APERTURA_FONDO_CREADO, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/cancelarFondo")
+    public ResponseEntity  cancelarFondo(@RequestBody AperturaFondo aperturaFondo){
+        fondoService.cancelarFondo(aperturaFondo);
         return new ResponseEntity<>(MensajesConstants.APERTURA_FONDO_CREADO, HttpStatus.OK);
     }
 

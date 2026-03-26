@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.btg.sistemafondos.enums.Estado;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +24,8 @@ public class AperturaFondo {
     private Fondo fondo; 
 
     private Double monto;
+
+    private Estado estado;
 
     
 }

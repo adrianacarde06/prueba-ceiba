@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.btg.sistemafondos.constants.MensajesConstants;
+import com.btg.sistemafondos.enums.Estado;
 import com.btg.sistemafondos.enums.TipoTransaccion;
 import com.btg.sistemafondos.exception.RequestException;
 import com.btg.sistemafondos.exception.ValidacionesException;
@@ -73,13 +74,17 @@ public class FondoServiceImpl implements FondoService {
             throw new ValidacionesException("E-301", MensajesConstants.ERROR_SALDO_CLIENTE);
         }
         
-        actualizarSaldo(cliente, aperturaFondo.getMonto());
+        actualizarSaldo(cliente, aperturaFondo.getMonto(), TipoTransaccion.APERTURA);
+        aperturaFondo.setEstado(Estado.ACTIVO);
         aperturaFondoRepository.save(aperturaFondo);
         crearTransaccion(aperturaFondo, TipoTransaccion.APERTURA);
     }
 
-    private void actualizarSaldo(Cliente cliente, Double monto){
-        cliente.setSaldo(cliente.getSaldo()-monto);
+    private void actualizarSaldo(Cliente cliente, Double monto, TipoTransaccion tipoTransaccion){
+        if(tipoTransaccion.equals(TipoTransaccion.APERTURA))
+            cliente.setSaldo(cliente.getSaldo()-monto);
+        else
+            cliente.setSaldo(cliente.getSaldo()+monto);
         clienteRepository.save(cliente);
     }
 
@@ -89,6 +94,20 @@ public class FondoServiceImpl implements FondoService {
           .tipoTransaccion(tipoTransaccion)
           .build();
         transaccionRepository.save(transaccion);
+    }
+
+    @Override
+    public void cancelarFondo(AperturaFondo aperturaFondo){
+        if(aperturaFondo.getId() == null){
+            throw new RequestException("E-403", MensajesConstants.APERTURA_FONDO_REQUERIDO);
+        }
+
+        AperturaFondo aperturaFondoGuardada = aperturaFondoRepository.findById(aperturaFondo.getId()).orElseThrow(() -> new NoSuchElementException(MensajesConstants.APERTURA_FONDO_REQUERIDO));
+        
+        actualizarSaldo(aperturaFondoGuardada.getCliente(), aperturaFondoGuardada.getMonto(), TipoTransaccion.CANCELACION);
+        aperturaFondoGuardada.setEstado(Estado.INACTIVO);
+        aperturaFondoRepository.save(aperturaFondoGuardada);
+        crearTransaccion(aperturaFondoGuardada, TipoTransaccion.CANCELACION);
     }
 
     @Override
