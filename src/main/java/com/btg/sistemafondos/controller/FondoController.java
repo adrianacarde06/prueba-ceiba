@@ -54,11 +54,6 @@ public class FondoController {
         return new ResponseEntity<>(MensajesConstants.APERTURA_FONDO_CREADO, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/cancelarFondo")
-    public ResponseEntity  cancelarFondo(@RequestBody AperturaFondo aperturaFondo){
-        fondoService.aperturaFondo(aperturaFondo);
-        return new ResponseEntity<>(MensajesConstants.APERTURA_FONDO_CREADO, HttpStatus.OK);
-    }
 
     @GetMapping(value="/verHistorial",produces = "application/json")
     public List<Transaccion> verHistorial(@RequestBody Cliente cliente) {
